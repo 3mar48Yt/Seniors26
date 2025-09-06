@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RFIS Seniors 2026</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #1a1a1a;
+      color: #cccccc;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #222;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.7);
+      color: #ccc;
+    }
+
+    .school-branding {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .school-logo img {
+      height: 70px;
+      width: 70px;
+      object-fit: contain;
+    }
+
+    .logo-fallback {
+      width: 70px;
+      height: 70px;
+      background: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-weight: bold;
+      font-size: 24px;
+      border-radius: 12px;
+    }
+
+    .school-info h1 {
+      margin: 0;
+      font-size: 2.2em;
+      letter-spacing: 2px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .school-info h2 {
+      margin: 0;
+      font-size: 1.3em;
+      color: #888;
+      font-weight: normal;
+      letter-spacing: 1.5px;
+    }
+
+    #videoSlideshow {
+      margin: 30px auto;
+      max-width: 800px;
+      position: relative;
+    }
+
+    .carousel-container {
+      overflow: hidden;
+      position: relative;
+      border-radius: 15px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      background: linear-gradient(135deg, #444, #222);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      will-change: transform;
+    }
+
+    .slide {
+      min-width: 100%;
+      padding: 40px 30px;
+      box-sizing: border-box;
+      color: #eee;
+      user-select: none;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .slide h3 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+
+    .slide p {
+      font-size: 1.1em;
+      margin-bottom: 25px;
+    }
+
+    .red-button {
+      display: inline-block;
+      padding: 12px 28px;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      background-color: #e03e2f;
+      border-radius: 35px;
+      box-shadow: 0 6px 15px rgba(224,62,47,0.7);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .red-button:hover {
+      background-color: #b83225;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(30,30,30,0.8);
+      border: none;
+      color: #ccc;
+      font-size: 2.4em;
+      padding: 0 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      user-select: none;
+      z-index: 5;
+      transition: background 0.3s ease;
+    }
+
+    .carousel-nav:hover {
+      background: rgba(224,62,47,0.9);
+      color: #fff;
+    }
+
+    .carousel-nav.prev {
+      left: 10px;
+    }
+
+    .carousel-nav.next {
+      right: 10px;
+    }
+
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+      user-select: none;
+    }
+
+    .indicator {
+      width: 16px;
+      height: 16px;
+      background-color: #555;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .indicator.active {
+      background-color: #e03e2f;
+      box-shadow: 0 0 6px #e03e2f;
+    }
+
+    .book {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 40px;
+      background: linear-gradient(135deg, #222, #111);
+      border-radius: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      perspective: 1500px;
+      user-select: none;
+    }
+
+    .book.flip {
+      animation: flipBook 0.4s forwards;
+    }
+
+    @keyframes flipBook {
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(15deg); }
+      100% { transform: rotateY(0deg); }
+    }
+
+    .book-page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    .page-side {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .student {
+      background: #333;
+      border-radius: 20px;
+      width: 150px;
+      height: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .student:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(224,62,47,0.9);
+    }
+
+    .student-suit {
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(135deg, #444, #222);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .student-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .student-name {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1.1em;
+      text-align: center;
+      color: #ddd;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .navigation {
+      max-width: 900px;
+      margin: 10px auto 30px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-button {
+      background: #333;
+      border: none;
+      color: #ccc;
+      font-size: 2.2em;
+      padding: 12px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      user-select: none;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+    }
+
+    .nav-button:active {
+      transform: scale(0.95);
+    }
+
+    .nav-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .next-text {
+      background: #333333;
+      color: #ffffff;
+      padding: 20px 40px;
+      border-radius: 30px;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      border: 3px solid #666666;
+      user-select: none;
+    }
+
+    #pageIndicator {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      font-weight: bold;
+      font-size: 22px;
+      color: #cccccc;
+      text-align: center;
+      user-select: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      animation: fadeIn 0.3s ease forwards;
+      overflow-y: auto;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #444 0%, #333 100%);
+      margin: 5% auto;
+      padding: 0;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: rgba(0,0,0,0.3);
+      padding: 30px;
+      text-align: center;
+      border-bottom: 2px solid rgba(102,102,102,0.3);
+    }
+
+    .modal-header h2 {
+      color: #ffffff;
+      font-size: 2.5em;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px;
+      align-items: center;
+    }
+
+    .modal-student-photo {
+      width: 200px;
+      height: 250px;
+      background: linear-gradient(135deg, #444 0%, #333 100%);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+      flex-shrink: 0;
+    }
+
+    .modal-student-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .modal-message {
+      flex: 1 1 300px;
+      color: #cccccc;
+      padding: 20px;
+    }
+
+    .modal-message h3 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    .modal-message p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      color: #cccccc;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      white-space: pre-wrap;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      color: #cccccc;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .close:hover {
+      color: #999999;
+      transform: scale(1.2);
+    }
+
+    .special-teacher-section {
+      margin: 40px auto 80px auto;
+      max-width: 1000px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .special-teacher-section h2 {
+      font-size: 2.5em;
+      color: #666666;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 0;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .special-teacher-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .special-teacher-photo {
+      width: 180px;
+      height: 180px;
+      background: #555;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .special-teacher-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+
+    .special-teacher-photo img.loaded {
+      opacity: 1;
+    }
+
+    /* SIMPLIFIED TEACHER SECTION */
+    .teacher-section {
+      margin: 40px auto 60px auto;
+      max-width: 1000px;
+      padding: 40px;
+      background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      border: 2px solid #333;
+      text-align: center;
+    }
+
+    .teacher-section h2 {
+      font-size: 2.5em;
+      color: #666666;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .teacher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .teacher-card {
+      background: linear-gradient(135deg, #333, #222);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      border: 1px solid #444;
+      transition: transform 0.3s ease;
+    }
+
+    .teacher-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .teacher-photo {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #444, #333);
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 15px auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      border: 3px solid #555;
+    }
+
+    .teacher-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .teacher-name {
+      font-size: 1.3em;
+      color: #cccccc;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .teacher-message {
+      font-size: 1em;
+      color: #999999;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .book-page {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .student {
+        width: 250px;
+        height: 320px;
+      }
+      
+      .book {
+        padding: 30px;
+        max-width: 90%;
+      }
+
+      .modal-body {
+        flex-direction: column;
+      }
+
+      .modal-student-photo, .modal-message {
+        width: 100%;
+        max-width: none;
+      }
+
+      .teacher-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body onload="renderBook(); updateCarousel(); renderTeachers();">
+
+<header>
+  <div class="school-branding">
+    <div class="school-logo">
+      <img src="images/logo.png" alt="Excellence Academy Logo" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Logo</div>'">
+    </div>
+    <div class="school-info">
+      <h1>RFIS Seniors 2026</h1>
+      <h2>Class of 2026</h2>
+    </div>
+  </div>
+</header>
+
+<section id="videoSlideshow">
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="slide" data-index="0">
+        <div class="slide-content">
+          <h3>📸 Our Instagram</h3>
+          <p>Watch our Journey from A to Z</p>
+          <a href="https://www.instagram.com/rfis_juniors?igsh=OHd1YXo5amR3YWlu&utm_source=qr" class="red-button" target="_blank" rel="noopener noreferrer">↗️Click Here</a>
+        </div>
+      </div>
+      
+      <div class="slide" data-index="1">
+        <div class="slide-content">
+          <h3>🌟 Junior Year</h3>
+          <p>Feels like yesterday.</p>
+          <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDU2ODcxMDM3Njg2MzIz?igsh=dnVsaWhkeXNxdjRq" class="red-button" target="_blank" rel="noopener noreferrer">↗️Click Here</a>
+        </div>
+      </div>
+      
+      <div class="slide" data-index="2">
+        <div class="slide-content">
+          <h3>✈️ Trips</h3>
+          <p>Check out all of the events with us!</p>
+          <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MTA3NzM4OTU5NDQ3Mzk4?igsh=aWo2bHZyZ2Fmdno1" class="red-button" target="_blank" rel="noopener noreferrer">↗️Click Here</a>
+        </div>
+      </div>
+    </div>
+    
+    <button class="carousel-nav prev" onclick="changeCarouselSlide(-1)">❮</button>
+    <button class="carousel-nav next" onclick="changeCarouselSlide(1)">❯</button>
+  </div>
+  
+  <div class="carousel-indicators">
+    <div class="indicator active" onclick="goToSlide(0)"></div>
+    <div class="indicator" onclick="goToSlide(1)"></div>
+    <div class="indicator" onclick="goToSlide(2)"></div>
+  </div>
+</section>
+
+<input type="text" id="searchBar" placeholder="Search student by name..." style="display:block; max-width: 900px; margin: 10px auto 0 auto; padding: 12px 20px; border-radius: 30px; border: none; font-size: 1.1em; box-shadow: 0 0 12px rgba(224,62,47,0.6); color: #eee; background: #222; outline:none; user-select:none;" />
+
+<div class="book" id="book">
+  <div class="book-page" id="bookPage">
+    <div class="page-side" id="leftSide"></div>
+    <div class="page-side" id="rightSide"></div>
+  </div>
+</div>
+
+<div class="navigation">
+  <button class="nav-button" id="prevBtn" onclick="changePage(-1)">❮</button>
+  <div class="next-text">NEXT</div>
+  <button class="nav-button" id="nextBtn" onclick="changePage(1)">❯</button>
+</div>
+
+<p id="pageIndicator">Page 1</p>
+
+<section class="special-teacher-section" id="specialTeacherSection">
+  <h2>SPECIAL THANK YOU TO MR. ZIAD</h2>
+  <div class="special-teacher-card">
+    <div class="special-teacher-photo">
+      <!-- HERE EDIT SPECIAL TEACHER IMAGE -->
+      <img src="images/mr_ziad.jpg" alt="Mr. Ziad" onerror="this.style.display='none'">
+    </div>
+    <div class="teacher-name" style="font-size: 1.8em; color: #cccccc; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">Mr. ZIAD</div>
+    <div class="teacher-message" style="font-size: 1.2em; color: #999999; line-height: 1.5; padding: 0 20px; max-width: 600px;">"Thank you, Mr. ZIAD, for your incredible support and inspiring lessons that shaped our journey!"</div>
+  </div>
+</section>
+
+<section class="teacher-section">
+  <h2>Thank You Our Other Teachers</h2>
+  <div class="teacher-grid" id="teacherGrid">
+  </div>
+</section>
+
+<div id="studentModal" class="modal">
+  <div class="modal-content">
+    <span class="close">×</span>
+    <div class="modal-header">
+      <h2 id="modalStudentName">Student Name</h2>
+    </div>
+    <div class="modal-body">
+      <div class="modal-student-photo">
+        <!-- HERE EDIT STUDENT IMAGE IN MODAL -->
+        <img id="modalStudentPhoto" src="" alt="Student Photo" />
+      </div>
+      <div class="modal-message">
+        <h3>Message from student</h3>
+        <p id="modalStudentMessage">Student message will appear here...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<audio id="flipSound" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2021/09/04/audio_4cf2c38e90.mp3?filename=page-flip-1-45715.mp3" type="audio/mpeg" />
+</audio>
+
+<script>
+  // ============================================
+  // HERE ADD STUDENTS - Just add names to this array
+  // ============================================
+  const studentData = [
+    "Ammar Yasser", 
+    "Omar Majdy", 
+    "Omar Swerki", 
+    "Abdulrahmen Bishly", 
+    "Omar Ibrahim", 
+    "Omar Bishly",
+    "khaled Aldosoki", 
+    "Yousef Hussein", 
+    "Hamza Aymin", 
+    "Omar Nassif", 
+    "student11", 
+    "student12"
+    // Add more students here by adding: "New Student Name",
+  ];
+
+  // ============================================
+  // HERE EDIT STUDENT MESSAGES
+  // ============================================
+  const studentInfo = {
+    "Ammar Yasser": "Message from student Ammar Yasser -  Add your personal message here...",
+    "Omar Majdy": "Message from student Omar Majdy  - Add your personal message here...",
+    "Omar Swerki": "Message from student Omar Swerki  - Add your personal message here...",
+    "Abdulrahmen Bishly": "Message from student Abdulrahmen Bishly - Add your personal message here...",
+    "Omar Ibrahim": "Message from student Omar Ibrahim  -Add your personal message here...",
+    "Omar Bishly": "Message from student Omar Bishly  - Add your personal message here...",
+    "khaled Aldosoki": "Message from student Khaled Aldosoki  - Add your personal message here...",
+    "Yousef Hussein": "Message from student Yousef Hussein - Add your personal message here...",
+    "Hamza Aymin": "Message from student Hamza Aymin  - Add your personal message here...",
+    "Omar Nassif": "Message from student Omar Nassif - Add your personal message here...",
+    "student11": "Message from student 11 - Add your personal message here...",
+    "student12": "Message from student 12 - Add your personal message here..."
+    // Add messages for new students: "Student Name": "Their message here",
+  };
+
+  // ============================================
+  // HERE ADD TEACHERS - Just add names to this array
+  // ============================================
+  const teacherData = [
+    "Doctor Jehad Alqudsi", 
+    "teacher2", 
+    "teacher3", 
+    "teacher4", 
+    "teacher5", 
+    "teacher6"
+    // Add more teachers here by adding: "New Teacher Name",
+  ];
+
+  // ============================================
+  // HERE EDIT TEACHER MESSAGES
+  // ============================================
+  const teacherMessages = {
+    "Doctor Jehad Alqudsi": "Thank you for your endless patience and dedication. You made learning fun and inspiring!",
+    "teacher2": "Your guidance and wisdom shaped our minds and hearts. We are forever grateful!",
+    "teacher3": "Thank you for believing in us and pushing us to reach our full potential!",
+    "teacher4": "Your passion for teaching ignited our love for learning. Thank you for everything!",
+    "teacher5": "Thank you for your dedication and for making every lesson memorable!",
+    "teacher6": "Your support and encouragement helped us grow. Thank you so much!"
+    // Add messages for new teachers: "Teacher Name": "Their message here",
+  };
+
+  let currentPage = 0;
+  const studentsPerPage = 6;
+  let filteredData = [...studentData];
+  const book = document.getElementById('book');
+  const leftSide = document.getElementById('leftSide');
+  const rightSide = document.getElementById('rightSide');
+  const flipSound = document.getElementById('flipSound');
+
+  let currentSlideIndex = 0;
+  const carouselTrack = document.getElementById('carouselTrack');
+
+  function updateCarousel() {
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    const translateX = -currentSlideIndex * 100;
+    carouselTrack.style.transform = `translateX(${translateX}%)`;
+
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentSlideIndex);
+    });
+  }
+
+  function changeCarouselSlide(direction) {
+    currentSlideIndex = (currentSlideIndex + direction + 3) % 3;
+    updateCarousel();
+  }
+
+  function goToSlide(index) {
+    currentSlideIndex = index;
+    updateCarousel();
+  }
+
+  setInterval(() => {
+    changeCarouselSlide(1);
+  }, 5000);
+
+  // SIMPLIFIED TEACHER RENDERING
+  function renderTeachers() {
+    const teacherGrid = document.getElementById('teacherGrid');
+    teacherGrid.innerHTML = '';
+
+    teacherData.forEach(name => {
+      const teacherCard = document.createElement('div');
+      teacherCard.className = 'teacher-card';
+      teacherCard.innerHTML = `
+        <div class="teacher-photo">
+          <!-- HERE EDIT TEACHER IMG - Image should be named: ${name}.jpg in images folder -->
+          <img src="images/${name}.jpg" alt="${name}" onerror="this.style.display='none'">
+        </div>
+        <div class="teacher-name">${name}</div>
+        <div class="teacher-message">"${teacherMessages[name] || 'Thank you for your dedication and guidance!'}"</div>
+      `;
+      teacherGrid.appendChild(teacherCard);
+    });
+  }
+
+  function renderBook() {
+    leftSide.innerHTML = '';
+    rightSide.innerHTML = '';
+
+    const start = currentPage * studentsPerPage;
+    const students = filteredData.slice(start, start + studentsPerPage);
+
+    const leftStudents = students.slice(0, 3);
+    const rightStudents = students.slice(3, 6);
+
+    leftStudents.forEach(name => {
+      const student = document.createElement('div');
+      student.className = 'student';
+      student.innerHTML = `
+        <div class="student-suit">
+          <!-- HERE EDIT STUDENT IMAGE - Image should be named: ${name}.jpg in images folder -->
+          <img src="images/${name}.jpg" alt="${name}" class="student-photo" onerror="this.style.display='none'">
+        </div>
+        <div class="student-name">${name}</div>
+      `;
+      student.addEventListener('click', () => openStudentModal(name));
+      leftSide.appendChild(student);
+    });
+
+    rightStudents.forEach(name => {
+      const student = document.createElement('div');
+      student.className = 'student';
+      student.innerHTML = `
+        <div class="student-suit">
+          <!-- HERE EDIT STUDENT IMAGE - Image should be named: ${name}.jpg in images folder -->
+          <img src="images/${name}.jpg" alt="${name}" class="student-photo" onerror="this.style.display='none'">
+        </div>
+        <div class="student-name">${name}</div>
+      `;
+      student.addEventListener('click', () => openStudentModal(name));
+      rightSide.appendChild(student);
+    });
+
+    const totalPages = Math.ceil(filteredData.length / studentsPerPage);
+    document.getElementById('pageIndicator').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
+  }
+
+  function changePage(dir) {
+    const maxPage = Math.ceil(filteredData.length / studentsPerPage) - 1;
+    if ((dir === -1 && currentPage === 0) || (dir === 1 && currentPage >= maxPage)) return;
+
+    currentPage += dir;
+
+    book.classList.add('flip');
+
+    try {
+      flipSound.currentTime = 0;
+      flipSound.play();
+    } catch (e) {
+      console.log('Audio play failed');
+    }
+
+    setTimeout(() => {
+      book.classList.remove('flip');
+      renderBook();
+    }, 400);
+  }
+
+  document.getElementById('searchBar').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    filteredData = studentData.filter(name => name.toLowerCase().includes(term));
+    currentPage = 0;
+    renderBook();
+  });
+
+  function openStudentModal(studentName) {
+    const modal = document.getElementById('studentModal');
+    const modalName = document.getElementById('modalStudentName');
+    const modalPhoto = document.getElementById('modalStudentPhoto');
+    const modalMessage = document.getElementById('modalStudentMessage');
+
+    modalName.textContent = studentName;
+    modalPhoto.src = `images/${studentName}.jpg`;
+    modalPhoto.alt = studentName;
+    modalMessage.textContent = studentInfo[studentName] || `Message from ${studentName} - Add your personal message here...`;
+
+    modal.style.display = 'block';
+  }
+
+  function closeStudentModal() {
+    document.getElementById('studentModal').style.display = 'none';
+  }
+
+  document.querySelector('.close').addEventListener('click', closeStudentModal);
+  
+  window.addEventListener('click', (event) => {
+    const modal = document.getElementById('studentModal');
+    if (event.target === modal) {
+      closeStudentModal();
+    }
+  });
+
+  const specialTeacherImg = document.querySelector('#specialTeacherSection .special-teacher-photo img');
+  if (specialTeacherImg) {
+    specialTeacherImg.addEventListener('load', () => {
+      specialTeacherImg.classList.add('loaded');
+    });
+  }
+</script>
+
+</body>
+</html>
